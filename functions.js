@@ -130,11 +130,11 @@ $(document).ready(function(){
             var place = list.findIndex(x => x.item == item),
             text = $("#temp").val();
             if(text.length > 0){
-               list[place].text = text;
+                list[place].text = text;
                 fill(list[place].parent);
                 if(opened.includes(item)){
                     $("#title" + item).html(text);
-                } 
+                }
             } else {
                 alert("please fill in some content for the item");
                 close = false;
