@@ -47,10 +47,15 @@ $(document).ready(function(){
 
     //add item to list
     $(document).on("click", ".add", function(){
-        var parent = Number($(this).data("parent"));
-        addItem({parent:parent, item:itemNumber(1), text:$("#text" + parent).val()});
-        $("#text" + parent).val("");
-        fill(parent);
+        var parent = Number($(this).data("parent")),
+        content = $("#text" + parent).val();
+        if(content.length > 0){
+            addItem({parent:parent, item:itemNumber(1), text:content});
+            $("#text" + parent).val("");
+            fill(parent);
+        } else {
+            getInfo(parent, 4);
+        }
     });
 
 
@@ -88,7 +93,7 @@ $(document).ready(function(){
         getInfo(item, 2);
     });
 
-    //copie an item and all there childeren
+    //copie an item and all there children
     $(document).on("click", ".copie", function(){
         var item = Number($(this).data("item"));
         getInfo(item, 3);
@@ -112,30 +117,37 @@ $(document).ready(function(){
     //carry on with the command
     $(document).on("click", "#ok", function(){
         var item = Number($(this).data("item")),
-        token = Number($(this).data("token"));
+        token = Number($(this).data("token")),
+        close = true;
         switch(token){
             case 0:
             check.push(item);
             $("#item" + item).remove();
             list.splice(list.findIndex(x => x.item == item), 1);
-            deleteChilderen();
+            deletechildren();
             break;
             case 1:
             var place = list.findIndex(x => x.item == item),
             text = $("#temp").val();
-            list[place].text = text;
-            fill(list[place].parent);
-            if(opened.includes(item)){
-                $("#title" + item).html(text);
+            if(text.length > 0){
+               list[place].text = text;
+                fill(list[place].parent);
+                if(opened.includes(item)){
+                    $("#title" + item).html(text);
+                } 
+            } else {
+                alert("please fill in some content for the item");
+                close = false;
             }
             break;
             case 2:
             var temp = list.splice(list.findIndex(x => x.item == item), 1),
-            oldParent = temp[0].parent;
-            addItem({parent:Number($("#temp").val()), item:temp[0].item, text:temp[0].text});
+            oldParent = temp[0].parent,
+            newParent = Number($("#temp").val());
+            addItem({parent:newParent, item:temp[0].item, text:temp[0].text});
             fill(oldParent);
-            if(opened.includes(temp[0].parent)){
-                fill(temp[0].parent);
+            if(opened.includes(newParent)){
+                fill(newParent);
             }
             break;
             case 3:
@@ -144,12 +156,14 @@ $(document).ready(function(){
             parent = Number($("#temp").val())
             check.push({oldItem:temp.item, newItem:newItem});
             addItem({parent:parent, item:newItem, text:temp.text});
-            copieChilderen();
+            copiechildren();
             if(opened.includes(parent) || parent == 0){
                 fill(parent);
             }
         }
-        $("#dark").remove();
+        if(close){
+            $("#dark").remove();
+        }
     });
 
     //cancel the command
@@ -214,7 +228,7 @@ $(document).ready(function(){
             var content = "";
             temp.forEach(function(item){
                 content += "<div class='item' id='item" + item.item + "'>" + item.text + 
-                "<div class='menu'><button class='menu-button'>...</button><div class='menu-content'>" +
+                "<div class='menu'><div class='menu-button'>...</div><div class='menu-content'>" +
                 "<div class='open' id='open" + item.item + "' data-item='" + item.item + "'>Open</div>" +
                 "<div class='up' id='up" + item.item + "' data-item='" + item.item + "'>Move up</div>" +
                 "<div class='down' id='down" + item.item + "' data-item='" + item.item + "'>Move down</div>" +
@@ -240,7 +254,7 @@ $(document).ready(function(){
         $("body").append("<div id='dark'><div id='mid'><div id='info'></div></div></div>");
         switch(token){
             case 0:
-            $("#info").html("<p>Are you sure you want to delete this item and all its childeren?</p>");
+            $("#info").html("<p>Are you sure you want to delete this item and all its children?</p>");
             break;
             case 1:
             $("#info").html("<p>Here you can edit your item</p><textarea id='temp'>" + list.find(x => x.item == item).text + "</textarea><br>");
@@ -251,11 +265,14 @@ $(document).ready(function(){
                 $("#info").html("<p>you can't transfer this item at the moment</p>");
                 token = 404;
             } else {
-                $("#info").html("<p>Select where you want to transfer the item and all its childeren to</p><select id='temp'>" + content + "</select>");
+                $("#info").html("<p>Select where you want to transfer the item and all its children to</p><select id='temp'>" + content + "</select>");
             }
             break;
             case 3:
-            $("#info").html("<p>Select where you want to copie the item and all its childeren to</p><select id='temp'>" + getSelectContent(0, item, 1, true) + "</select>");
+            $("#info").html("<p>Select where you want to copie the item and all its children to</p><select id='temp'>" + getSelectContent(0, item, 1, true) + "</select>");
+            break;
+            case 4:
+            $("#info").html("<p>please fill in some content for the item</p>")
         }
         $("#info").append("<button id='cancel'>Cancel</button><button id='ok' data-item='" + item + "' data-token='" + token + "'>Ok</button>");
     }
@@ -329,8 +346,8 @@ $(document).ready(function(){
         fill(temp[0].parent);
     }
 
-    //copie childeren of copied item(s)
-    function copieChilderen(){
+    //copie child(ren) of copied item(s)
+    function copiechildren(){
         var newItem = 0;
         while(check.length > 0){
             var temp = list.filter(x => x.parent == check[0].oldItem);
@@ -349,8 +366,8 @@ $(document).ready(function(){
         }
     }
 
-    //delete childeren from deleted item(s) and delete boxes from html if necessary
-    function deleteChilderen(){
+    //delete child(ren) from deleted item(s) and delete boxes from html if necessary
+    function deletechildren(){
         while(check.length > 0){
             var start = list.findIndex(x => x.parent == check[0]),
             close = opened.indexOf(check[0]);
