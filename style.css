@@ -1,10 +1,14 @@
 .box{
     float: left;
     width: 455px;
-    margin: 1px;
-    border: 1px gray solid;
-    border-radius: 10px;
+    margin: 0.5px;
+    border-width: 10px 1px;
+    border-radius: 100% / 60px;
+    border-style: solid;
+    border-color: gray;
     background-color: #ccc;
+    padding-bottom: 15px;
+    padding-top: 15px;
 }
 
 .text,
@@ -20,6 +24,7 @@ div{
 .close{
     float: right;
     clear: both;
+    margin-top: 5px;
 }
 
 header,
@@ -143,7 +148,16 @@ button:focus{
     width: 500px;
     background-color: #fff;
     text-align: center;
-    border-radius: 10px;
+    border-width: 10px 1px;
+    border-radius: 100% / 80px;
+    border-style: solid;
+    border-color: black;
+    padding-bottom: 20px;
+    padding-top: 15px;
+}
+
+#info button{
+    margin-top: 5px;
 }
 
 #ok{

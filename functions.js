@@ -265,11 +265,11 @@ $(document).ready(function(){
                 $("#info").html("<p>you can't transfer this item at the moment</p>");
                 token = 404;
             } else {
-                $("#info").html("<p>Select where you want to transfer the item and all its children to</p><select id='temp'>" + content + "</select>");
+                $("#info").html("<p>Select where you want to transfer the item and all its children too</p><select id='temp'>" + content + "</select>");
             }
             break;
             case 3:
-            $("#info").html("<p>Select where you want to copie the item and all its children to</p><select id='temp'>" + getSelectContent(0, item, 1, true) + "</select>");
+            $("#info").html("<p>Select where you want to copie the item and all its children too</p><select id='temp'>" + getSelectContent(0, item, 1, true) + "</select>");
             break;
             case 4:
             $("#info").html("<p>please fill in some content for the item</p>")
