@@ -63,6 +63,7 @@ button{
     color: rgba(0, 0, 0, 1);
     -webkit-transition: background-color 1s;
     transition: background-color 1s;
+    margin-right: 1px;
 }
 
 button:hover{
@@ -168,6 +169,8 @@ button:focus{
     margin-right: 100px;
 }
 
-#temp{
+#temp,
+#nameList,
+#saveName{
     width: 99%;
 }
