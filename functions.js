@@ -447,7 +447,7 @@ $(document).ready(function(){
             "<p><b>WARNING:</b> this can't be undone!</p>");
             break;
             //import a save
-            case 9;
+            case 9:
             $("#info1").html("<p>Please select the save you want to import</p>" +
             "<select id='nameList'>" + getSaveList(false) + "</select>");
         }
@@ -577,7 +577,7 @@ $(document).ready(function(){
                 var temp3 = [];
                 temp2.forEach(function(item){
                     newItem = itemNumber(newItem + 1);
-                    temp3.push({parent:check[0].newItem, item:newItem text:item.text});
+                    temp3.push({parent:check[0].newItem, item:newItem, text:item.text});
                     check.push({oldItem:item.item, newItem:newItem});
                 });
                 addItem(temp3);
